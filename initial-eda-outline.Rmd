@@ -1,6 +1,6 @@
 ---
 title: "Initial EDA Basic Outline"
-author: "Names of all group members"
+author: "Alvin Chen"
 output: html_notebook
 ---
 
@@ -10,7 +10,10 @@ This is an outline for your Initial EDA. You can follow this outline, or you can
 
 State your specific research question and why it is interesting. 
 
+Specific Research Question: What is the correlation between wealth group of countries (high, upper middle, lower middle, low) and their effects on climate change? Which one contributes the most?
 
+Climate change is a problem that impacts our daily lives and it has become a main global issue. Studying the relationships between different countries and their contributions to climate change can be crucial in devising plans to slow climate change on our planet. This topic sparks my interest as it not only effects me, but it also 
+be devastating for the future of out planet.In studying and generating research, helpful insight can be provided to help spread awareness and provide understanding in which group of countries are contributing the most to this global issue. 
 
 ## Data Processing 
 
@@ -18,11 +21,50 @@ State your specific research question and why it is interesting.
 
 Include R code and written explanation to import your **TWO** data sets.
 
-#### Data Wrangling 
+```{r}
+#import statements
+library(tidyverse) 
+library(readr)
+library(esquisse)
+```
+
+```{r}
+co2em_file <- 'https://raw.githubusercontent.com/stat184-summer2023/final-project-alvin-chen/main/API_EN.ATM.CO2E.PC_DS2_en_csv_v2_10576797.csv'
+
+co2em <- read_csv(co2em_file)
+
+head(co2em)
+```
+
+#### Written explanation: 
+This data was collected by Climate Watch in 2020. The purpose of this data is to display the amount of CO2 emissions by country spread across many years. This data was taken in order to form a correlation between countries and CO2 output.
+
+#### Examine Data Source:
+Looking at thee co2em data set, it is clear to see that there are some missing variables for some countries on some years in the table. As a result this data some countries will be removed and ignored in data consideration. In order to contribute to the guiding questions some key variables that stand out are the countries name, and the the years with the emission amount data. To answer my question, I will need to clean my data, and remove some out lier variables that wont contribute to the study.
+
+```{r}
+income_file <- 'https://raw.githubusercontent.com/stat184-summer2023/final-project-alvin-chen/main/Metadata_Country_API_EN.ATM.CO2E.PC_DS2_en_csv_v2_5551837.csv'
+
+income <- read_csv(income_file)
+
+head(income)
+
+```
+
+#### Written explanation
+This data was sourced by The World Bank in 2022. The purpose of this data is to assign whether a country is high to low income class based on their respective values. This data was taken in order to form a correlation between countries and income status.
+
+#### Examine Data Source:
+Looking at the income data set, it is clear to see that there are also some missing variables and empty columns. This will lead to the need for data cleaning to remove countries with missing data and removing variables that arent needed for the study such as special notes and region. Variable that will likely be helpful are country names and also the class or income group. To work towards my research question it is planned to clean and merge the data sets as well as the possible creation of new variables to display groups of countries in a decending bar graph. 
+
+### Data Wrangling 
 
 Include R code and written explanation for wangling your data (you can make multiple wrangled data sets). 
 
+```{r}
 
+
+```
 
 
 ## Data Visualization
