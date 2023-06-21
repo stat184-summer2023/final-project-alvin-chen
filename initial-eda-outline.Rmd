@@ -62,10 +62,47 @@ Looking at the income data set, it is clear to see that there are also some miss
 Include R code and written explanation for wangling your data (you can make multiple wrangled data sets). 
 
 ```{r}
+# clean the co2em data set
+# remove columns with no data
+co2em_clean <- 
+  co2em[, 1:(ncol(co2em) - 5)]
 
+# remove incomplete cases
+co2_cleaned <- co2em_clean[complete.cases(co2em_clean), ]
+
+# remove unwanted columns 
+co2_cleaned <- co2_cleaned[, -c(2:4)]
 
 ```
 
+```{r}
+# clean the income data set
+# remove unwanted columns and columns with no data
+income_clean <- 
+  income[, c(3, 5)]
+
+# remove incomplete cases
+income_cleaned <- income_clean[complete.cases(income_clean), ]
+
+# rename column
+names(income_cleaned)[2] <- "Country Name"
+
+```
+
+```{r}
+# merge two datasets into one by country name
+co2_income <- merge(income_cleaned, co2_cleaned, by = "Country Name")
+
+# remove space in country name variable
+names(co2_income)[1] <- "CountryName"
+
+# covert to long format to graph dates
+co2_income_long <- tidyr::gather(co2_income, year, value, -CountryName, -IncomeGroup)
+
+# change names of year and value 
+names(co2_income_long)[3] <- "Year"
+names(co2_income_long)[4] <- "CO2(metric tons per capita)"
+```
 
 ## Data Visualization
 
@@ -73,11 +110,40 @@ Include R code and written explanation for wangling your data (you can make mult
 
 Include R code to make one data visualization (I would encourage you to use 3 or more variables). Include a brief written description of what your graph shows. Is this graph helpful in answering your research question? If it is helpful, will you need to add/modify anything in this graph in the final report? 
 
+```{r}
+# graph data 
+ggplot(co2_income_long) +
+  geom_col(aes(x = Year,y = `CO2(metric tons per capita)`,fill = IncomeGroup)) +
+  scale_fill_hue(direction = 1) +
+  labs(
+    title = "World County Income Class vs CO2 Emissions by Year from 1960-2015 ",
+    fill = "Income Group"
+  ) +
+  theme_minimal()
+```
+Explanation: My graph establishes a relationship between the year and the CO2 production and it is colored based on the income group of the providing countries. This graph is helpful in answering my question in terms of which income group contributes the most CO2 emissions in terms of climate change but it lacks help in terms of telling me which countries beling to which group and it also doesn't answer the second part of my question of which specific country contributed the most throughout the years. For my final report, I might need to sum up all the CO2 emissions from each country and create a new variable to help me answer my question. 
+
 #### Plot 2
 
 Include R code to make one data visualization (I would encourage you to use 3 or more variables). Include a brief written description of what your graph shows. Is this graph helpful in answering your research question? If it is helpful, will you need to add/modify anything in this graph in the final report? 
+
+```{r}
+ggplot(co2_income_long) +
+  geom_col(aes(x = CountryName,y = `CO2(metric tons per capita)`,fill = IncomeGroup)) +
+  scale_fill_hue(direction = 1) +
+  labs(
+    x = "Country Name",
+    title = "Countries by Income Group vs CO2 Emissions",
+    fill = "Income Group"
+  ) +
+  theme_minimal()
+```
+Explanation: This graph provides insight on Countries by name and which income group they are in and their level of CO2 emission. This graph will prove helpful in answering my questions of which country is the greatest contributory. It offers information on which class also contributed the most but the bars and data are messy and hard to read. Some reorganization and modifications of both graphs are required to enhance readability and provide a more clearer answers to my research questions.
 
 
 ## Conclusion
 
 Include your initial intuition as to what the answer to your research question is using the data sets and visualizations you created. 
+
+All in all from composing this EDA, I think I will need to answer my question with the process of multiple graph or maybe subplots to better organize my data. Some common trends I noticed were that higher value countries seem to contribute the most to climate change as they produce the most CO2 emissions and that lower income countries contribute a lot less even compared to middle class and especially high income countries. In order to provide the clearest evidence I need to reorganize my data to enhance readability and probably generate more graphs to make each part of my question clearer. In looking at my research question now I think it is a solid foundation to go off of with concrete evidence that can support a clear answer. With that being said specific parts of the question, could receive specifics to dive deeper into the given issue as climate change can be explored in multiple different ways. In completing this draft, I have paved a clear path to what my final outcome will start to look like.
+
