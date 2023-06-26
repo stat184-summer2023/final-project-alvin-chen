@@ -60,22 +60,20 @@ Looking at the income data set, it is clear to see that there are also some miss
 co2em_clean <- 
   co2em[, 1:(ncol(co2em) - 5)]
 
-# remove incomplete cases
-co2_cleaned <- co2em_clean[complete.cases(co2em_clean), ]
-
-# remove unwanted columns 
-co2_cleaned <- co2_cleaned[, -c(2:4)]
-
-```
-
-```{r}
-# clean the income data set
-# remove unwanted columns and columns with no data
 income_clean <- 
   income[, c(3, 5)]
 
-# remove incomplete cases
-income_cleaned <- income_clean[complete.cases(income_clean), ]
+datasets_to_clean <- list(co2em_clean, income_clean)
+
+for (dataset in datasets_to_clean) {
+    # Remove incomplete cases
+  dataset <- dataset[complete.cases(dataset), ]
+    # Assign the cleaned data back to the original dataset
+  assign(deparse(substitute(dataset)), dataset)
+}
+
+# remove unwanted columns 
+co2_cleaned <- co2_cleaned[, -c(2:4)]
 
 # rename column
 names(income_cleaned)[2] <- "Country Name"
@@ -96,13 +94,38 @@ names(co2_income_long)[3] <- "Year"
 names(co2_income_long)[4] <- "CO2(metric tons per capita)"
 ```
 
+```{r}
+# Calculate average CO2 emissions per country within each income group
+sum_co2_all_year <- aggregate(`CO2(metric tons per capita)` ~ CountryName + IncomeGroup, co2_income_long, sum)
+```
 
 ## Data Visualization
 
 Include R code and written explanation for your data visualization(s) with at least 3 variables. You must have **at least** one graph. You may have more than one (I would encourage you to have more than one). 
+```{r}
+# Create separate plots for each income group
+ggplot(co2_income_long) +
+  geom_bar(aes(x = CountryName, y = `CO2(metric tons per capita)`, fill = IncomeGroup), stat = "identity") +
+  geom_line(data = sum_co2_all_year, aes(x = CountryName, y = `CO2(metric tons per capita)`, color = IncomeGroup, group = IncomeGroup), show.legend = FALSE) +
+  labs(
+    x = "Country Name",
+    y = "CO2 (metric tons per capita)",
+    title = "Countries by Income Group vs CO2 Emissions for All A years"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 5),
+    strip.text = element_text(size = 10),
+    plot.title = element_text(hjust = 0.5)
+  ) +
+  facet_wrap(~ IncomeGroup, ncol = 2, strip.position = "bottom", scales = "free_x") +
+  guides(fill = FALSE)
+```
+Explanation: 
 
+```{r}
 
-
+```
 
 ## Conclusion
 
