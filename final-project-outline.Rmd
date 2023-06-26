@@ -9,77 +9,83 @@ output: html_notebook
 Specific Research Question: What is the correlation between wealth group of countries (high, upper middle, lower middle, low) and their effects on climate change? Which one contributes the most?
 
 Climate change is a problem that impacts our daily lives and it has become a main global issue. Studying the relationships between different countries and their contributions to climate change can be crucial in devising plans to slow climate change on our planet. This topic sparks my interest as it not only effects me, but it also
-can be devastating for the future of out planet.In studying and generating research, helpful insight can be provided to help spread awareness and provide understanding in which group of countries are contributing the most to this global issue. 
+can be devastating for the future of our planet. In studying and generating research, helpful insight can be provided to help spread awareness and provide understanding in which group of countries are contributing the most to this global issue. 
 
 The data used for this report can be found/downloaded at: https://data.worldbank.org/indicator/EN.ATM.CO2E.PC 
 
 ## Data Processing 
 
 ```{r}
-#import statements
+# import statements
 library(tidyverse) 
 library(readr)
-library(esquisse)
 ```
 
 #### Data Intake 
 
 ```{r}
+# path of CO2 emissions data set
 co2em_file <- 'API_EN.ATM.CO2E.PC_DS2_en_csv_v2_10576797.csv'
 
+# read csv file
 co2em <- read_csv(co2em_file)
 
+# examine 
 glimpse(co2em)
 ```
 ##### Written explanation: 
 This data was collected by Climate Watch in 2020. The purpose of this data is to display the amount of CO2 emissions by country spread across many years. This data was taken in order to form a correlation between countries and CO2 output.
 
 ##### Examine Data Source:
-Looking at thee co2em data set, it is clear to see that there are some missing variables for some countries on some years in the table. As a result this data some countries will be removed and ignored in data consideration. In order to contribute to the guiding questions some key variables that stand out are the countries name, and the the years with the emission amount data. To answer my question, I will need to clean my data, and remove some out lier variables that wont contribute to the study.
+Looking at thee co2em data set, it is clear to see that there are some missing variables for some countries on some years in the table. As a result this data some countries will be removed and ignored in data consideration. In order to contribute to the guiding questions some key variables that stand out are the countries name, and the the years with the emission amount data. To answer my question, I will need to clean my data, and remove some outlier variables that wont contribute to the study.
 
 ```{r}
+# path of income groups data set
 income_file <- 'Metadata_Country_API_EN.ATM.CO2E.PC_DS2_en_csv_v2_5551837.csv'
 
+# read csv file 
 income <- read_csv(income_file)
 
+# examine 
 glimpse(income)
 ```
 
 #### Written explanation
-This data was sourced by The World Bank in 2022. The purpose of this data is to assign whether a country is high to low income class based on their respective values. This data was taken in order to form a correlation between countries and income status.
+This data was sourced by The World Bank in 2022. The purpose of this data is to assign whether a country is high to low income class based on their respective dollar values. This data was taken in order to form a correlation between countries and income status.
 
 #### Examine Data Source:
-Looking at the income data set, it is clear to see that there are also some missing variables and empty columns. This will lead to the need for data cleaning to remove countries with missing data and removing variables that arent needed for the study such as special notes and region. Variable that will likely be helpful are country names and also the class or income group. To work towards my research question it is planned to clean and merge the data sets as well as the possible creation of new variables to display groups of countries in a decending bar graph. 
+Looking at the income data set, it is clear to see that there are also some missing variables and empty columns. This will lead to the need for data cleaning to remove countries with missing data and removing variables that aren't needed for the study such as special notes and region. Variable that will likely be helpful are country names and also the class or income group. To work towards my research question it is planned to clean and merge the data sets as well as the possible creation of new variables to display groups of countries in a descending bar graph. 
 
 
 ## Data Wrangling 
 
 ```{r}
-# clean the co2em data set
+# clean the co2em and income data set
 # remove columns with no data
 co2em_clean <- 
   co2em[, 1:(ncol(co2em) - 5)]
 
+# remove columns with no data
 income_clean <- 
   income[, c(3, 5)]
 
+# designate data both data sets to remove incomplete cases
 datasets_to_clean <- list(co2em_clean, income_clean)
 
+# for loop to remove the the incomeplete cases from the datasets
 for (dataset in datasets_to_clean) {
-    # Remove incomplete cases
+    # remove incomplete cases
   dataset <- dataset[complete.cases(dataset), ]
-    # Assign the cleaned data back to the original dataset
+    # assign clean data back to the original datasets
   assign(deparse(substitute(dataset)), dataset)
 }
 
-# remove unwanted columns 
+# remove unwanted columns in CO2 data set  
 co2_cleaned <- co2_cleaned[, -c(2:4)]
 
-# rename column
+# rename column in income data set
 names(income_cleaned)[2] <- "Country Name"
-```
 
-```{r}
 # merge two datasets into one by country name
 co2_income <- merge(income_cleaned, co2_cleaned, by = "Country Name")
 
@@ -92,50 +98,55 @@ co2_income_long <- tidyr::gather(co2_income, year, value, -CountryName, -IncomeG
 # change names of year and value 
 names(co2_income_long)[3] <- "Year"
 names(co2_income_long)[4] <- "CO2(metric tons per capita)"
-```
 
-```{r}
+# calculate the sum of CO2 production on all years for each country
 sum_co2_all_year <- aggregate(`CO2(metric tons per capita)` ~ CountryName + IncomeGroup, co2_income_long, sum)
 
-# Calculate average of the sums within each income group
+# calculate the avg of the sums for each country within their income groups
 avg_co2_all_year <- aggregate(`CO2(metric tons per capita)` ~ IncomeGroup, sum_co2_all_year, mean, na.rm = TRUE)
 
+# merged the calculated averages with the origional data set
 co2_income_merged <- co2_income_long %>%
   left_join(avg_co2_all_year, by = "IncomeGroup") %>%
   mutate(AvgCO2 = `CO2(metric tons per capita).y`)
 
+# remove the extrat added row that is not needed
 co2_income_merged <- co2_income_merged %>%
   select(-5)
 
+# rename the modified row name back to original to have a complete clean dated for graphing
 names(co2_income_merged)[4] <- "CO2(metric tons per capita)"
 ```
 
 ## Data Visualization
 
-Include R code and written explanation for your data visualization(s) with at least 3 variables. You must have **at least** one graph. You may have more than one (I would encourage you to have more than one). 
 ```{r}
-# Create separate plots for each income group
+# graph the data set
 ggplot(co2_income_merged) +
+  # layer a bar graph and a line graph
   geom_bar(aes(x = CountryName, y = `CO2(metric tons per capita)`, fill = IncomeGroup), stat = "identity") +
   geom_line(aes(x = CountryName, y = `AvgCO2`, color = IncomeGroup, group = IncomeGroup), linetype = "solid", size = .5, show.legend = FALSE) +
+  # label the axis in the graph 
   labs(
     x = "Country Name",
     y = "CO2 (metric tons per capita)",
     title = "Countries by Income Group vs CO2 Emissions"
   ) +
   theme_minimal() +
+  # correct the size of texts and other aesthetics of graph
   theme(
     axis.text.x = element_text(angle = 45, hjust = 1, vjust = 1, size = 5),
     strip.text = element_text(size = 10),
     plot.title = element_text(hjust = 0.5)
   ) +
+  # divide by income groups 
   facet_wrap(~ IncomeGroup, ncol = 2, strip.position = "bottom", scales = "free_x") +
   guides(fill = FALSE)
 ```
 Explanation: 
 
-The graph above shows detailed information regarding countries and their CO2 production combined from the years 1960-2015. It displays helpful qualities such as subgroups of countries divided by their income class and also layered with a general trend lind on how much C02 production is being produced by each country. In analyzing the graph it is noticeable that the high income group of countries product the most CO2 emission over this course of time. This graph will prove helpful in answering all parts of my research question.
+The graph above shows detailed information regarding countries and their CO2 production combined from the years 1960-2015. It displays helpful qualities such as subgroups of countries divided by their income class and also layered with a general trend line on how much C02 production is being produced by each country. In analyzing the graph it is noticeable that the high income group of countries product the most CO2 emission over this course of time. This graph will prove helpful in answering all parts of my research question.
 
 ## Conclusion
 
-Answer your research question using the data sets and visualizations you created. 
+After examining the relevant data we can revisit our research question of: What is the correlation between wealth group of countries (high, upper middle, lower middle, low) and their effects on climate change? Which one contributes the most? To answer this question, a conclusion can be made up that in general, the higher the income class of a country, the more CO2 emissions they produce. When looking at the graph we can see the hierarchical placement of the income classes when coming the amount of CO2 emissions they have produced within 1960-2015. We can also see from the organized table that Quataris the contry that has contributed the most in producing CO2 emissions.
