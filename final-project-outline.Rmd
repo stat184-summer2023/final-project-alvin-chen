@@ -129,7 +129,7 @@ ggplot(co2_income_merged) +
   # label the axis in the graph 
   labs(
     x = "Country Name",
-    y = "CO2 (metric tons per capita)",
+    y = "CO2 by metric tons per capita",
     title = "Countries by Income Group vs CO2 Emissions"
   ) +
   theme_minimal() +
