@@ -95,8 +95,19 @@ names(co2_income_long)[4] <- "CO2(metric tons per capita)"
 ```
 
 ```{r}
-# Calculate average CO2 emissions per country within each income group
 sum_co2_all_year <- aggregate(`CO2(metric tons per capita)` ~ CountryName + IncomeGroup, co2_income_long, sum)
+
+# Calculate average of the sums within each income group
+avg_co2_all_year <- aggregate(`CO2(metric tons per capita)` ~ IncomeGroup, sum_co2_all_year, mean, na.rm = TRUE)
+
+co2_income_merged <- co2_income_long %>%
+  left_join(avg_co2_all_year, by = "IncomeGroup") %>%
+  mutate(AvgCO2 = `CO2(metric tons per capita).y`)
+
+co2_income_merged <- co2_income_merged %>%
+  select(-5)
+
+names(co2_income_merged)[4] <- "CO2(metric tons per capita)"
 ```
 
 ## Data Visualization
@@ -104,13 +115,13 @@ sum_co2_all_year <- aggregate(`CO2(metric tons per capita)` ~ CountryName + Inco
 Include R code and written explanation for your data visualization(s) with at least 3 variables. You must have **at least** one graph. You may have more than one (I would encourage you to have more than one). 
 ```{r}
 # Create separate plots for each income group
-ggplot(co2_income_long) +
+ggplot(co2_income_merged) +
   geom_bar(aes(x = CountryName, y = `CO2(metric tons per capita)`, fill = IncomeGroup), stat = "identity") +
-  geom_line(data = sum_co2_all_year, aes(x = CountryName, y = `CO2(metric tons per capita)`, color = IncomeGroup, group = IncomeGroup), show.legend = FALSE) +
+  geom_line(aes(x = CountryName, y = `AvgCO2`, color = IncomeGroup, group = IncomeGroup), linetype = "solid", size = .5, show.legend = FALSE) +
   labs(
     x = "Country Name",
     y = "CO2 (metric tons per capita)",
-    title = "Countries by Income Group vs CO2 Emissions for All A years"
+    title = "Countries by Income Group vs CO2 Emissions"
   ) +
   theme_minimal() +
   theme(
@@ -123,9 +134,7 @@ ggplot(co2_income_long) +
 ```
 Explanation: 
 
-```{r}
-
-```
+The graph above shows detailed information regarding countries and their CO2 production combined from the years 1960-2015. It displays helpful qualities such as subgroups of countries divided by their income class and also layered with a general trend lind on how much C02 production is being produced by each country. In analyzing the graph it is noticeable that the high income group of countries product the most CO2 emission over this course of time. This graph will prove helpful in answering all parts of my research question.
 
 ## Conclusion
 
