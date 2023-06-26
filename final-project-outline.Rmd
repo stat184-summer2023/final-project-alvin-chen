@@ -72,7 +72,7 @@ income_clean <-
 # designate data both data sets to remove incomplete cases
 datasets_to_clean <- list(co2em_clean, income_clean)
 
-# for loop to remove the the incomeplete cases from the datasets
+# for loop to remove the the incomplete cases from the data sets
 for (dataset in datasets_to_clean) {
     # remove incomplete cases
   dataset <- dataset[complete.cases(dataset), ]
@@ -105,12 +105,12 @@ sum_co2_all_year <- aggregate(`CO2(metric tons per capita)` ~ CountryName + Inco
 # calculate the avg of the sums for each country within their income groups
 avg_co2_all_year <- aggregate(`CO2(metric tons per capita)` ~ IncomeGroup, sum_co2_all_year, mean, na.rm = TRUE)
 
-# merged the calculated averages with the origional data set
+# merged the calculated averages with the original data set
 co2_income_merged <- co2_income_long %>%
   left_join(avg_co2_all_year, by = "IncomeGroup") %>%
   mutate(AvgCO2 = `CO2(metric tons per capita).y`)
 
-# remove the extrat added row that is not needed
+# remove the extra added row that is not needed
 co2_income_merged <- co2_income_merged %>%
   select(-5)
 

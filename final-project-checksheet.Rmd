@@ -1,6 +1,6 @@
 ---
 title: 'Final Project: Guidance Document and Checksheet'
-author: "Author Name(s)"
+author: "Alvin Chen"
 date: "Due June 26, 2023"
 output:  html_notebook
 ---
@@ -24,9 +24,11 @@ The official rubric can be found on the "Submit Final Project Report" on Canvas.
 
 (A) .Rmd Line numbers where at least two different data sources are imported:  
 
+- lines 28, 31, 44, 47
 
 (B) .Rmd Line numbers for inspecting data intake:  
 
+- lines 34, 50
 
 ### Data Wrangling (5 out of 7 required)
 
@@ -35,25 +37,32 @@ The official rubric can be found on the "Submit Final Project Report" on Canvas.
 
 (A) .Rmd Line number(s) for general data wrangling: 
 
+- lines 78, 87, 99, 100, 111, 115, 118
 
 (B) .Rmd Line number(s) for a join operation: 
 
+- lines 90, 110
 
 (C) .Rmd Line number(s) for use of reduction and/or transformation functions: 
 
+- lines 013, 106
+
 (D) .Rmd Line number(s) for a pivot_wider or pivot_longer operation (or equivalent):
 
+- line 96
 
 (E) .Rmd Line number(s) for use of regular expressions: 
 
+-NA
 
 (F) .Rmd Line number(s) for use of user-defined functions: 
 
+-NA
 
 (G) .Rmd Line number(s) for use of loops and/or control flow: 
 
+- lines 76-81
 
-  
 
 ### Data Visualization (3 of 5 required)
 
@@ -62,15 +71,23 @@ The official rubric can be found on the "Submit Final Project Report" on Canvas.
 
 (A) .Rmd Line number(s) for use of multiple different geoms on a single plot:  
 
+- lines 127, 128
+
 (B) .Rmd Line number(s) for use of multiple aesthetics:  
+
+- lines 127, 128, 138, 139, 143, 144
 
 (C) .Rmd Line number(s) for use of layered graphics:  
 
+- lines 127, 128
+
 (D) .Rmd Line number(s) for use of maps:  
+
+-NA
 
 (E) .Rmd Line number(s) for use of decision tree or dendogram:    
 
-
+-NA
 
 
 ### Other requirements (Nothing for you to report in this Guidance Document)
