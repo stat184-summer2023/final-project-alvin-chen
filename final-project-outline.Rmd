@@ -1,28 +1,100 @@
 ---
 title: "Final Project Basic Outline"
-author: "Names of all group members"
+author: "Alvin Chen"
 output: html_notebook
 ---
 
-This is an outline for your final project. You can follow this outline, or you can modify it as you see fit. Do what works best for your project. 
-
 ## Research Question 
 
-State your general specific question and why it is interesting. 
+Specific Research Question: What is the correlation between wealth group of countries (high, upper middle, lower middle, low) and their effects on climate change? Which one contributes the most?
 
+Climate change is a problem that impacts our daily lives and it has become a main global issue. Studying the relationships between different countries and their contributions to climate change can be crucial in devising plans to slow climate change on our planet. This topic sparks my interest as it not only effects me, but it also
+can be devastating for the future of out planet.In studying and generating research, helpful insight can be provided to help spread awareness and provide understanding in which group of countries are contributing the most to this global issue. 
 
+The data used for this report can be found/downloaded at: https://data.worldbank.org/indicator/EN.ATM.CO2E.PC 
 
 ## Data Processing 
 
+```{r}
+#import statements
+library(tidyverse) 
+library(readr)
+library(esquisse)
+```
+
 #### Data Intake 
 
-Include R code and written explanation to import your **TWO** data sets.
+```{r}
+co2em_file <- 'API_EN.ATM.CO2E.PC_DS2_en_csv_v2_10576797.csv'
 
-#### Data Wrangling 
+co2em <- read_csv(co2em_file)
 
-Include R code and written explanation for wangling your data (you can make multiple wrangled data sets). 
+glimpse(co2em)
+```
+##### Written explanation: 
+This data was collected by Climate Watch in 2020. The purpose of this data is to display the amount of CO2 emissions by country spread across many years. This data was taken in order to form a correlation between countries and CO2 output.
+
+##### Examine Data Source:
+Looking at thee co2em data set, it is clear to see that there are some missing variables for some countries on some years in the table. As a result this data some countries will be removed and ignored in data consideration. In order to contribute to the guiding questions some key variables that stand out are the countries name, and the the years with the emission amount data. To answer my question, I will need to clean my data, and remove some out lier variables that wont contribute to the study.
+
+```{r}
+income_file <- 'Metadata_Country_API_EN.ATM.CO2E.PC_DS2_en_csv_v2_5551837.csv'
+
+income <- read_csv(income_file)
+
+glimpse(income)
+```
+
+#### Written explanation
+This data was sourced by The World Bank in 2022. The purpose of this data is to assign whether a country is high to low income class based on their respective values. This data was taken in order to form a correlation between countries and income status.
+
+#### Examine Data Source:
+Looking at the income data set, it is clear to see that there are also some missing variables and empty columns. This will lead to the need for data cleaning to remove countries with missing data and removing variables that arent needed for the study such as special notes and region. Variable that will likely be helpful are country names and also the class or income group. To work towards my research question it is planned to clean and merge the data sets as well as the possible creation of new variables to display groups of countries in a decending bar graph. 
 
 
+## Data Wrangling 
+
+```{r}
+# clean the co2em data set
+# remove columns with no data
+co2em_clean <- 
+  co2em[, 1:(ncol(co2em) - 5)]
+
+# remove incomplete cases
+co2_cleaned <- co2em_clean[complete.cases(co2em_clean), ]
+
+# remove unwanted columns 
+co2_cleaned <- co2_cleaned[, -c(2:4)]
+
+```
+
+```{r}
+# clean the income data set
+# remove unwanted columns and columns with no data
+income_clean <- 
+  income[, c(3, 5)]
+
+# remove incomplete cases
+income_cleaned <- income_clean[complete.cases(income_clean), ]
+
+# rename column
+names(income_cleaned)[2] <- "Country Name"
+```
+
+```{r}
+# merge two datasets into one by country name
+co2_income <- merge(income_cleaned, co2_cleaned, by = "Country Name")
+
+# remove space in country name variable
+names(co2_income)[1] <- "CountryName"
+
+# covert to long format to graph dates
+co2_income_long <- tidyr::gather(co2_income, year, value, -CountryName, -IncomeGroup)
+
+# change names of year and value 
+names(co2_income_long)[3] <- "Year"
+names(co2_income_long)[4] <- "CO2(metric tons per capita)"
+```
 
 
 ## Data Visualization

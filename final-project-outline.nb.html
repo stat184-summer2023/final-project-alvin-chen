@@ -9,7 +9,7 @@
 <meta http-equiv="X-UA-Compatible" content="IE=EDGE" />
 
 
-<meta name="author" content="Names of all group members" />
+<meta name="author" content="Alvin Chen" />
 
 
 <title>Final Project Basic Outline</title>
@@ -1748,31 +1748,181 @@ display: none;
 
 
 <h1 class="title toc-ignore">Final Project Basic Outline</h1>
-<h4 class="author">Names of all group members</h4>
+<h4 class="author">Alvin Chen</h4>
 
 </div>
 
 
 <!-- rnb-text-begin -->
-<p>This is an outline for your final project. You can follow this
-outline, or you can modify it as you see fit. Do what works best for
-your project.</p>
 <div id="research-question" class="section level2">
 <h2>Research Question</h2>
-<p>State your general specific question and why it is interesting.</p>
+<p>Specific Research Question: What is the correlation between wealth
+group of countries (high, upper middle, lower middle, low) and their
+effects on climate change? Which one contributes the most?</p>
+<p>Climate change is a problem that impacts our daily lives and it has
+become a main global issue. Studying the relationships between different
+countries and their contributions to climate change can be crucial in
+devising plans to slow climate change on our planet. This topic sparks
+my interest as it not only effects me, but it also can be devastating
+for the future of out planet.In studying and generating research,
+helpful insight can be provided to help spread awareness and provide
+understanding in which group of countries are contributing the most to
+this global issue.</p>
+<p>The data used for this report can be found/downloaded at: <a href="https://data.worldbank.org/indicator/EN.ATM.CO2E.PC" class="uri">https://data.worldbank.org/indicator/EN.ATM.CO2E.PC</a></p>
 </div>
 <div id="data-processing" class="section level2">
 <h2>Data Processing</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxubGlicmFyeShlc3F1aXNzZSlcblxuYGBgIn0= -->
+<pre class="r"><code>library(esquisse)
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUmVnaXN0ZXJlZCBTMyBtZXRob2Qgb3ZlcndyaXR0ZW4gYnkgJ2RhdGEudGFibGUnOlxuICBtZXRob2QgICAgICAgICAgIGZyb21cbiAgcHJpbnQuZGF0YS50YWJsZSAgICAgXG5SZWdpc3RlcmVkIFMzIG1ldGhvZCBvdmVyd3JpdHRlbiBieSAnaHRtbHdpZGdldHMnOlxuICBtZXRob2QgICAgICAgICAgIGZyb20gICAgICAgICBcbiAgcHJpbnQuaHRtbHdpZGdldCB0b29sczpyc3R1ZGlvXG4ifQ== -->
+<pre><code>Registered S3 method overwritten by &#39;data.table&#39;:
+  method           from
+  print.data.table     
+Registered S3 method overwritten by &#39;htmlwidgets&#39;:
+  method           from         
+  print.htmlwidget tools:rstudio</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 <div id="data-intake" class="section level4">
 <h4>Data Intake</h4>
-<p>Include R code and written explanation to import your
-<strong>TWO</strong> data sets.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuY28yZW1fZmlsZSA8LSAnQVBJX0VOLkFUTS5DTzJFLlBDX0RTMl9lbl9jc3ZfdjJfMTA1NzY3OTcuY3N2J1xuXG5jbzJlbSA8LSByZWFkX2NzdihjbzJlbV9maWxlKVxuXG5nbGltcHNlKGNvMmVtKVxuYGBgIn0= -->
+<pre class="r"><code>co2em_file &lt;- &#39;API_EN.ATM.CO2E.PC_DS2_en_csv_v2_10576797.csv&#39;
+
+co2em &lt;- read_csv(co2em_file)
+
+glimpse(co2em)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<div id="written-explanation" class="section level5">
+<h5>Written explanation:</h5>
+<p>This data was collected by Climate Watch in 2020. The purpose of this
+data is to display the amount of CO2 emissions by country spread across
+many years. This data was taken in order to form a correlation between
+countries and CO2 output.</p>
 </div>
-<div id="data-wrangling" class="section level4">
-<h4>Data Wrangling</h4>
-<p>Include R code and written explanation for wangling your data (you
-can make multiple wrangled data sets).</p>
+<div id="examine-data-source" class="section level5">
+<h5>Examine Data Source:</h5>
+<p>Looking at thee co2em data set, it is clear to see that there are
+some missing variables for some countries on some years in the table. As
+a result this data some countries will be removed and ignored in data
+consideration. In order to contribute to the guiding questions some key
+variables that stand out are the countries name, and the the years with
+the emission amount data. To answer my question, I will need to clean my
+data, and remove some out lier variables that wont contribute to the
+study.</p>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuaW5jb21lX2ZpbGUgPC0gJ01ldGFkYXRhX0NvdW50cnlfQVBJX0VOLkFUTS5DTzJFLlBDX0RTMl9lbl9jc3ZfdjJfNTU1MTgzNy5jc3YnXG5cbmluY29tZSA8LSByZWFkX2NzdihpbmNvbWVfZmlsZSlcbmBgYCJ9 -->
+<pre class="r"><code>income_file &lt;- &#39;Metadata_Country_API_EN.ATM.CO2E.PC_DS2_en_csv_v2_5551837.csv&#39;
+
+income &lt;- read_csv(income_file)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiTmV3IG5hbWVzOlJvd3M6IDI2NSBDb2x1bW5zOiA24pSA4pSAIENvbHVtbiBzcGVjaWZpY2F0aW9uIOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgOKUgFxuRGVsaW1pdGVyOiBcIixcIlxuY2hyICg1KTogQ291bnRyeSBDb2RlLCBSZWdpb24sIEluY29tZUdyb3VwLCBTcGVjaWFsTm90ZXMsIFRhYmxlTmFtZVxubGdsICgxKTogLi4uNlxu4oS5IFVzZSBgc3BlYygpYCB0byByZXRyaWV2ZSB0aGUgZnVsbCBjb2x1bW4gc3BlY2lmaWNhdGlvbiBmb3IgdGhpcyBkYXRhLlxu4oS5IFNwZWNpZnkgdGhlIGNvbHVtbiB0eXBlcyBvciBzZXQgYHNob3dfY29sX3R5cGVzID0gRkFMU0VgIHRvIHF1aWV0IHRoaXMgbWVzc2FnZS5cbiJ9 -->
+<pre><code>New names:Rows: 265 Columns: 6── Column specification ────────────────────────────────────────────────────────────────────────────────────
+Delimiter: &quot;,&quot;
+chr (5): Country Code, Region, IncomeGroup, SpecialNotes, TableName
+lgl (1): ...6
+ℹ Use `spec()` to retrieve the full column specification for this data.
+ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuZ2xpbXBzZShpbmNvbWUpXG5gYGAifQ== -->
+<pre class="r"><code>glimpse(income)</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-output-begin eyJkYXRhIjoiUm93czogMjY1XG5Db2x1bW5zOiA2XG4kIGBDb3VudHJ5IENvZGVgIDxjaHI+IFwiQUJXXCIsIFwiQUZFXCIsIFwiQUZHXCIsIFwiQUZXXCIsIFwiQUdPXCIsIFwiQUxCXCIsIFwiQU5EXCIsIFwiQVJCXCIsIFwiQVJFXCIsIFwiQVJHXCIsIFwiQVJNXCIsIFwiQVNNXCIs4oCmXG4kIFJlZ2lvbiAgICAgICAgIDxjaHI+IFwiTGF0aW4gQW1lcmljYSAmIENhcmliYmVhblwiLCBOQSwgXCJTb3V0aCBBc2lhXCIsIE5BLCBcIlN1Yi1TYWhhcmFuIEFmcmljYVwiLCBcIkV1cm9wZSAmIOKAplxuJCBJbmNvbWVHcm91cCAgICA8Y2hyPiBcIkhpZ2ggaW5jb21lXCIsIE5BLCBcIkxvdyBpbmNvbWVcIiwgTkEsIFwiTG93ZXIgbWlkZGxlIGluY29tZVwiLCBcIlVwcGVyIG1pZGRsZSBpbmNvbWVcIiwg4oCmXG4kIFNwZWNpYWxOb3RlcyAgIDxjaHI+IE5BLCBcIjI2IGNvdW50cmllcywgc3RyZXRjaGluZyBmcm9tIHRoZSBSZWQgU2VhIGluIHRoZSBOb3J0aCB0byB0aGUgQ2FwZSBvZiBHb29kIEhvcOKAplxuJCBUYWJsZU5hbWUgICAgICA8Y2hyPiBcIkFydWJhXCIsIFwiQWZyaWNhIEVhc3Rlcm4gYW5kIFNvdXRoZXJuXCIsIFwiQWZnaGFuaXN0YW5cIiwgXCJBZnJpY2EgV2VzdGVybiBhbmQgQ2VudHJhbFwi4oCmXG4kIC4uLjYgICAgICAgICAgIDxsZ2w+IE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEsIE5BLCBOQSwgTkEs4oCmXG4ifQ== -->
+<pre><code>Rows: 265
+Columns: 6
+$ `Country Code` &lt;chr&gt; &quot;ABW&quot;, &quot;AFE&quot;, &quot;AFG&quot;, &quot;AFW&quot;, &quot;AGO&quot;, &quot;ALB&quot;, &quot;AND&quot;, &quot;ARB&quot;, &quot;ARE&quot;, &quot;ARG&quot;, &quot;ARM&quot;, &quot;ASM&quot;,…
+$ Region         &lt;chr&gt; &quot;Latin America &amp; Caribbean&quot;, NA, &quot;South Asia&quot;, NA, &quot;Sub-Saharan Africa&quot;, &quot;Europe &amp; …
+$ IncomeGroup    &lt;chr&gt; &quot;High income&quot;, NA, &quot;Low income&quot;, NA, &quot;Lower middle income&quot;, &quot;Upper middle income&quot;, …
+$ SpecialNotes   &lt;chr&gt; NA, &quot;26 countries, stretching from the Red Sea in the North to the Cape of Good Hop…
+$ TableName      &lt;chr&gt; &quot;Aruba&quot;, &quot;Africa Eastern and Southern&quot;, &quot;Afghanistan&quot;, &quot;Africa Western and Central&quot;…
+$ ...6           &lt;lgl&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,…</code></pre>
+<!-- rnb-output-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 </div>
+</div>
+<div id="written-explanation-1" class="section level4">
+<h4>Written explanation</h4>
+<p>This data was sourced by The World Bank in 2022. The purpose of this
+data is to assign whether a country is high to low income class based on
+their respective values. This data was taken in order to form a
+correlation between countries and income status.</p>
+</div>
+<div id="examine-data-source-1" class="section level4">
+<h4>Examine Data Source:</h4>
+<p>Looking at the income data set, it is clear to see that there are
+also some missing variables and empty columns. This will lead to the
+need for data cleaning to remove countries with missing data and
+removing variables that arent needed for the study such as special notes
+and region. Variable that will likely be helpful are country names and
+also the class or income group. To work towards my research question it
+is planned to clean and merge the data sets as well as the possible
+creation of new variables to display groups of countries in a decending
+bar graph.</p>
+</div>
+</div>
+<div id="data-wrangling" class="section level2">
+<h2>Data Wrangling</h2>
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBjbGVhbiB0aGUgY28yZW0gZGF0YSBzZXRcbiMgcmVtb3ZlIGNvbHVtbnMgd2l0aCBubyBkYXRhXG5jbzJlbV9jbGVhbiA8LSBcbiAgY28yZW1bLCAxOihuY29sKGNvMmVtKSAtIDUpXVxuXG4jIHJlbW92ZSBpbmNvbXBsZXRlIGNhc2VzXG5jbzJfY2xlYW5lZCA8LSBjbzJlbV9jbGVhbltjb21wbGV0ZS5jYXNlcyhjbzJlbV9jbGVhbiksIF1cblxuIyByZW1vdmUgdW53YW50ZWQgY29sdW1ucyBcbmNvMl9jbGVhbmVkIDwtIGNvMl9jbGVhbmVkWywgLWMoMjo0KV1cblxuYGBgIn0= -->
+<pre class="r"><code># clean the co2em data set
+# remove columns with no data
+co2em_clean &lt;- 
+  co2em[, 1:(ncol(co2em) - 5)]
+
+# remove incomplete cases
+co2_cleaned &lt;- co2em_clean[complete.cases(co2em_clean), ]
+
+# remove unwanted columns 
+co2_cleaned &lt;- co2_cleaned[, -c(2:4)]
+</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBjbGVhbiB0aGUgaW5jb21lIGRhdGEgc2V0XG4jIHJlbW92ZSB1bndhbnRlZCBjb2x1bW5zIGFuZCBjb2x1bW5zIHdpdGggbm8gZGF0YVxuaW5jb21lX2NsZWFuIDwtIFxuICBpbmNvbWVbLCBjKDMsIDUpXVxuXG4jIHJlbW92ZSBpbmNvbXBsZXRlIGNhc2VzXG5pbmNvbWVfY2xlYW5lZCA8LSBpbmNvbWVfY2xlYW5bY29tcGxldGUuY2FzZXMoaW5jb21lX2NsZWFuKSwgXVxuXG4jIHJlbmFtZSBjb2x1bW5cbm5hbWVzKGluY29tZV9jbGVhbmVkKVsyXSA8LSBcIkNvdW50cnkgTmFtZVwiXG5gYGAifQ== -->
+<pre class="r"><code># clean the income data set
+# remove unwanted columns and columns with no data
+income_clean &lt;- 
+  income[, c(3, 5)]
+
+# remove incomplete cases
+income_cleaned &lt;- income_clean[complete.cases(income_clean), ]
+
+# rename column
+names(income_cleaned)[2] &lt;- &quot;Country Name&quot;</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
+<!-- rnb-text-end -->
+<!-- rnb-chunk-begin -->
+<!-- rnb-source-begin eyJkYXRhIjoiYGBgclxuIyBtZXJnZSB0d28gZGF0YXNldHMgaW50byBvbmUgYnkgY291bnRyeSBuYW1lXG5jbzJfaW5jb21lIDwtIG1lcmdlKGluY29tZV9jbGVhbmVkLCBjbzJfY2xlYW5lZCwgYnkgPSBcIkNvdW50cnkgTmFtZVwiKVxuXG4jIHJlbW92ZSBzcGFjZSBpbiBjb3VudHJ5IG5hbWUgdmFyaWFibGVcbm5hbWVzKGNvMl9pbmNvbWUpWzFdIDwtIFwiQ291bnRyeU5hbWVcIlxuXG4jIGNvdmVydCB0byBsb25nIGZvcm1hdCB0byBncmFwaCBkYXRlc1xuY28yX2luY29tZV9sb25nIDwtIHRpZHlyOjpnYXRoZXIoY28yX2luY29tZSwgeWVhciwgdmFsdWUsIC1Db3VudHJ5TmFtZSwgLUluY29tZUdyb3VwKVxuXG4jIGNoYW5nZSBuYW1lcyBvZiB5ZWFyIGFuZCB2YWx1ZSBcbm5hbWVzKGNvMl9pbmNvbWVfbG9uZylbM10gPC0gXCJZZWFyXCJcbm5hbWVzKGNvMl9pbmNvbWVfbG9uZylbNF0gPC0gXCJDTzIobWV0cmljIHRvbnMgcGVyIGNhcGl0YSlcIlxuYGBgIn0= -->
+<pre class="r"><code># merge two datasets into one by country name
+co2_income &lt;- merge(income_cleaned, co2_cleaned, by = &quot;Country Name&quot;)
+
+# remove space in country name variable
+names(co2_income)[1] &lt;- &quot;CountryName&quot;
+
+# covert to long format to graph dates
+co2_income_long &lt;- tidyr::gather(co2_income, year, value, -CountryName, -IncomeGroup)
+
+# change names of year and value 
+names(co2_income_long)[3] &lt;- &quot;Year&quot;
+names(co2_income_long)[4] &lt;- &quot;CO2(metric tons per capita)&quot;</code></pre>
+<!-- rnb-source-end -->
+<!-- rnb-chunk-end -->
+<!-- rnb-text-begin -->
 </div>
 <div id="data-visualization" class="section level2">
 <h2>Data Visualization</h2>
@@ -1788,7 +1938,7 @@ you created.</p>
 <!-- rnb-text-end -->
 </div>
 
-<div id="rmd-source-code">LS0tCnRpdGxlOiAiRmluYWwgUHJvamVjdCBCYXNpYyBPdXRsaW5lIgphdXRob3I6ICJOYW1lcyBvZiBhbGwgZ3JvdXAgbWVtYmVycyIKb3V0cHV0OiBodG1sX25vdGVib29rCi0tLQoKVGhpcyBpcyBhbiBvdXRsaW5lIGZvciB5b3VyIGZpbmFsIHByb2plY3QuIFlvdSBjYW4gZm9sbG93IHRoaXMgb3V0bGluZSwgb3IgeW91IGNhbiBtb2RpZnkgaXQgYXMgeW91IHNlZSBmaXQuIERvIHdoYXQgd29ya3MgYmVzdCBmb3IgeW91ciBwcm9qZWN0LiAKCiMjIFJlc2VhcmNoIFF1ZXN0aW9uIAoKU3RhdGUgeW91ciBnZW5lcmFsIHNwZWNpZmljIHF1ZXN0aW9uIGFuZCB3aHkgaXQgaXMgaW50ZXJlc3RpbmcuIAoKCgojIyBEYXRhIFByb2Nlc3NpbmcgCgojIyMjIERhdGEgSW50YWtlIAoKSW5jbHVkZSBSIGNvZGUgYW5kIHdyaXR0ZW4gZXhwbGFuYXRpb24gdG8gaW1wb3J0IHlvdXIgKipUV08qKiBkYXRhIHNldHMuCgojIyMjIERhdGEgV3JhbmdsaW5nIAoKSW5jbHVkZSBSIGNvZGUgYW5kIHdyaXR0ZW4gZXhwbGFuYXRpb24gZm9yIHdhbmdsaW5nIHlvdXIgZGF0YSAoeW91IGNhbiBtYWtlIG11bHRpcGxlIHdyYW5nbGVkIGRhdGEgc2V0cykuIAoKCgoKIyMgRGF0YSBWaXN1YWxpemF0aW9uCgpJbmNsdWRlIFIgY29kZSBhbmQgd3JpdHRlbiBleHBsYW5hdGlvbiBmb3IgeW91ciBkYXRhIHZpc3VhbGl6YXRpb24ocykgd2l0aCBhdCBsZWFzdCAzIHZhcmlhYmxlcy4gWW91IG11c3QgaGF2ZSAqKmF0IGxlYXN0Kiogb25lIGdyYXBoLiBZb3UgbWF5IGhhdmUgbW9yZSB0aGFuIG9uZSAoSSB3b3VsZCBlbmNvdXJhZ2UgeW91IHRvIGhhdmUgbW9yZSB0aGFuIG9uZSkuIAoKCgoKIyMgQ29uY2x1c2lvbgoKQW5zd2VyIHlvdXIgcmVzZWFyY2ggcXVlc3Rpb24gdXNpbmcgdGhlIGRhdGEgc2V0cyBhbmQgdmlzdWFsaXphdGlvbnMgeW91IGNyZWF0ZWQuIA==</div>
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiRmluYWwgUHJvamVjdCBCYXNpYyBPdXRsaW5lIgphdXRob3I6ICJBbHZpbiBDaGVuIgpvdXRwdXQ6IGh0bWxfbm90ZWJvb2sKLS0tCgojIyBSZXNlYXJjaCBRdWVzdGlvbiAKClNwZWNpZmljIFJlc2VhcmNoIFF1ZXN0aW9uOiBXaGF0IGlzIHRoZSBjb3JyZWxhdGlvbiBiZXR3ZWVuIHdlYWx0aCBncm91cCBvZiBjb3VudHJpZXMgKGhpZ2gsIHVwcGVyIG1pZGRsZSwgbG93ZXIgbWlkZGxlLCBsb3cpIGFuZCB0aGVpciBlZmZlY3RzIG9uIGNsaW1hdGUgY2hhbmdlPyBXaGljaCBvbmUgY29udHJpYnV0ZXMgdGhlIG1vc3Q/CgpDbGltYXRlIGNoYW5nZSBpcyBhIHByb2JsZW0gdGhhdCBpbXBhY3RzIG91ciBkYWlseSBsaXZlcyBhbmQgaXQgaGFzIGJlY29tZSBhIG1haW4gZ2xvYmFsIGlzc3VlLiBTdHVkeWluZyB0aGUgcmVsYXRpb25zaGlwcyBiZXR3ZWVuIGRpZmZlcmVudCBjb3VudHJpZXMgYW5kIHRoZWlyIGNvbnRyaWJ1dGlvbnMgdG8gY2xpbWF0ZSBjaGFuZ2UgY2FuIGJlIGNydWNpYWwgaW4gZGV2aXNpbmcgcGxhbnMgdG8gc2xvdyBjbGltYXRlIGNoYW5nZSBvbiBvdXIgcGxhbmV0LiBUaGlzIHRvcGljIHNwYXJrcyBteSBpbnRlcmVzdCBhcyBpdCBub3Qgb25seSBlZmZlY3RzIG1lLCBidXQgaXQgYWxzbwpjYW4gYmUgZGV2YXN0YXRpbmcgZm9yIHRoZSBmdXR1cmUgb2Ygb3V0IHBsYW5ldC5JbiBzdHVkeWluZyBhbmQgZ2VuZXJhdGluZyByZXNlYXJjaCwgaGVscGZ1bCBpbnNpZ2h0IGNhbiBiZSBwcm92aWRlZCB0byBoZWxwIHNwcmVhZCBhd2FyZW5lc3MgYW5kIHByb3ZpZGUgdW5kZXJzdGFuZGluZyBpbiB3aGljaCBncm91cCBvZiBjb3VudHJpZXMgYXJlIGNvbnRyaWJ1dGluZyB0aGUgbW9zdCB0byB0aGlzIGdsb2JhbCBpc3N1ZS4gCgpUaGUgZGF0YSB1c2VkIGZvciB0aGlzIHJlcG9ydCBjYW4gYmUgZm91bmQvZG93bmxvYWRlZCBhdDogaHR0cHM6Ly9kYXRhLndvcmxkYmFuay5vcmcvaW5kaWNhdG9yL0VOLkFUTS5DTzJFLlBDIAoKIyMgRGF0YSBQcm9jZXNzaW5nIAoKYGBge3J9CiNpbXBvcnQgc3RhdGVtZW50cwpsaWJyYXJ5KHRpZHl2ZXJzZSkgCmxpYnJhcnkocmVhZHIpCmxpYnJhcnkoZXNxdWlzc2UpCmBgYAoKIyMjIyBEYXRhIEludGFrZSAKCmBgYHtyfQpjbzJlbV9maWxlIDwtICdBUElfRU4uQVRNLkNPMkUuUENfRFMyX2VuX2Nzdl92Ml8xMDU3Njc5Ny5jc3YnCgpjbzJlbSA8LSByZWFkX2NzdihjbzJlbV9maWxlKQoKZ2xpbXBzZShjbzJlbSkKYGBgCiMjIyMjIFdyaXR0ZW4gZXhwbGFuYXRpb246IApUaGlzIGRhdGEgd2FzIGNvbGxlY3RlZCBieSBDbGltYXRlIFdhdGNoIGluIDIwMjAuIFRoZSBwdXJwb3NlIG9mIHRoaXMgZGF0YSBpcyB0byBkaXNwbGF5IHRoZSBhbW91bnQgb2YgQ08yIGVtaXNzaW9ucyBieSBjb3VudHJ5IHNwcmVhZCBhY3Jvc3MgbWFueSB5ZWFycy4gVGhpcyBkYXRhIHdhcyB0YWtlbiBpbiBvcmRlciB0byBmb3JtIGEgY29ycmVsYXRpb24gYmV0d2VlbiBjb3VudHJpZXMgYW5kIENPMiBvdXRwdXQuCgojIyMjIyBFeGFtaW5lIERhdGEgU291cmNlOgpMb29raW5nIGF0IHRoZWUgY28yZW0gZGF0YSBzZXQsIGl0IGlzIGNsZWFyIHRvIHNlZSB0aGF0IHRoZXJlIGFyZSBzb21lIG1pc3NpbmcgdmFyaWFibGVzIGZvciBzb21lIGNvdW50cmllcyBvbiBzb21lIHllYXJzIGluIHRoZSB0YWJsZS4gQXMgYSByZXN1bHQgdGhpcyBkYXRhIHNvbWUgY291bnRyaWVzIHdpbGwgYmUgcmVtb3ZlZCBhbmQgaWdub3JlZCBpbiBkYXRhIGNvbnNpZGVyYXRpb24uIEluIG9yZGVyIHRvIGNvbnRyaWJ1dGUgdG8gdGhlIGd1aWRpbmcgcXVlc3Rpb25zIHNvbWUga2V5IHZhcmlhYmxlcyB0aGF0IHN0YW5kIG91dCBhcmUgdGhlIGNvdW50cmllcyBuYW1lLCBhbmQgdGhlIHRoZSB5ZWFycyB3aXRoIHRoZSBlbWlzc2lvbiBhbW91bnQgZGF0YS4gVG8gYW5zd2VyIG15IHF1ZXN0aW9uLCBJIHdpbGwgbmVlZCB0byBjbGVhbiBteSBkYXRhLCBhbmQgcmVtb3ZlIHNvbWUgb3V0IGxpZXIgdmFyaWFibGVzIHRoYXQgd29udCBjb250cmlidXRlIHRvIHRoZSBzdHVkeS4KCmBgYHtyfQppbmNvbWVfZmlsZSA8LSAnTWV0YWRhdGFfQ291bnRyeV9BUElfRU4uQVRNLkNPMkUuUENfRFMyX2VuX2Nzdl92Ml81NTUxODM3LmNzdicKCmluY29tZSA8LSByZWFkX2NzdihpbmNvbWVfZmlsZSkKCmdsaW1wc2UoaW5jb21lKQpgYGAKCiMjIyMgV3JpdHRlbiBleHBsYW5hdGlvbgpUaGlzIGRhdGEgd2FzIHNvdXJjZWQgYnkgVGhlIFdvcmxkIEJhbmsgaW4gMjAyMi4gVGhlIHB1cnBvc2Ugb2YgdGhpcyBkYXRhIGlzIHRvIGFzc2lnbiB3aGV0aGVyIGEgY291bnRyeSBpcyBoaWdoIHRvIGxvdyBpbmNvbWUgY2xhc3MgYmFzZWQgb24gdGhlaXIgcmVzcGVjdGl2ZSB2YWx1ZXMuIFRoaXMgZGF0YSB3YXMgdGFrZW4gaW4gb3JkZXIgdG8gZm9ybSBhIGNvcnJlbGF0aW9uIGJldHdlZW4gY291bnRyaWVzIGFuZCBpbmNvbWUgc3RhdHVzLgoKIyMjIyBFeGFtaW5lIERhdGEgU291cmNlOgpMb29raW5nIGF0IHRoZSBpbmNvbWUgZGF0YSBzZXQsIGl0IGlzIGNsZWFyIHRvIHNlZSB0aGF0IHRoZXJlIGFyZSBhbHNvIHNvbWUgbWlzc2luZyB2YXJpYWJsZXMgYW5kIGVtcHR5IGNvbHVtbnMuIFRoaXMgd2lsbCBsZWFkIHRvIHRoZSBuZWVkIGZvciBkYXRhIGNsZWFuaW5nIHRvIHJlbW92ZSBjb3VudHJpZXMgd2l0aCBtaXNzaW5nIGRhdGEgYW5kIHJlbW92aW5nIHZhcmlhYmxlcyB0aGF0IGFyZW50IG5lZWRlZCBmb3IgdGhlIHN0dWR5IHN1Y2ggYXMgc3BlY2lhbCBub3RlcyBhbmQgcmVnaW9uLiBWYXJpYWJsZSB0aGF0IHdpbGwgbGlrZWx5IGJlIGhlbHBmdWwgYXJlIGNvdW50cnkgbmFtZXMgYW5kIGFsc28gdGhlIGNsYXNzIG9yIGluY29tZSBncm91cC4gVG8gd29yayB0b3dhcmRzIG15IHJlc2VhcmNoIHF1ZXN0aW9uIGl0IGlzIHBsYW5uZWQgdG8gY2xlYW4gYW5kIG1lcmdlIHRoZSBkYXRhIHNldHMgYXMgd2VsbCBhcyB0aGUgcG9zc2libGUgY3JlYXRpb24gb2YgbmV3IHZhcmlhYmxlcyB0byBkaXNwbGF5IGdyb3VwcyBvZiBjb3VudHJpZXMgaW4gYSBkZWNlbmRpbmcgYmFyIGdyYXBoLiAKCgojIyBEYXRhIFdyYW5nbGluZyAKCmBgYHtyfQojIGNsZWFuIHRoZSBjbzJlbSBkYXRhIHNldAojIHJlbW92ZSBjb2x1bW5zIHdpdGggbm8gZGF0YQpjbzJlbV9jbGVhbiA8LSAKICBjbzJlbVssIDE6KG5jb2woY28yZW0pIC0gNSldCgojIHJlbW92ZSBpbmNvbXBsZXRlIGNhc2VzCmNvMl9jbGVhbmVkIDwtIGNvMmVtX2NsZWFuW2NvbXBsZXRlLmNhc2VzKGNvMmVtX2NsZWFuKSwgXQoKIyByZW1vdmUgdW53YW50ZWQgY29sdW1ucyAKY28yX2NsZWFuZWQgPC0gY28yX2NsZWFuZWRbLCAtYygyOjQpXQoKYGBgCgpgYGB7cn0KIyBjbGVhbiB0aGUgaW5jb21lIGRhdGEgc2V0CiMgcmVtb3ZlIHVud2FudGVkIGNvbHVtbnMgYW5kIGNvbHVtbnMgd2l0aCBubyBkYXRhCmluY29tZV9jbGVhbiA8LSAKICBpbmNvbWVbLCBjKDMsIDUpXQoKIyByZW1vdmUgaW5jb21wbGV0ZSBjYXNlcwppbmNvbWVfY2xlYW5lZCA8LSBpbmNvbWVfY2xlYW5bY29tcGxldGUuY2FzZXMoaW5jb21lX2NsZWFuKSwgXQoKIyByZW5hbWUgY29sdW1uCm5hbWVzKGluY29tZV9jbGVhbmVkKVsyXSA8LSAiQ291bnRyeSBOYW1lIgpgYGAKCmBgYHtyfQojIG1lcmdlIHR3byBkYXRhc2V0cyBpbnRvIG9uZSBieSBjb3VudHJ5IG5hbWUKY28yX2luY29tZSA8LSBtZXJnZShpbmNvbWVfY2xlYW5lZCwgY28yX2NsZWFuZWQsIGJ5ID0gIkNvdW50cnkgTmFtZSIpCgojIHJlbW92ZSBzcGFjZSBpbiBjb3VudHJ5IG5hbWUgdmFyaWFibGUKbmFtZXMoY28yX2luY29tZSlbMV0gPC0gIkNvdW50cnlOYW1lIgoKIyBjb3ZlcnQgdG8gbG9uZyBmb3JtYXQgdG8gZ3JhcGggZGF0ZXMKY28yX2luY29tZV9sb25nIDwtIHRpZHlyOjpnYXRoZXIoY28yX2luY29tZSwgeWVhciwgdmFsdWUsIC1Db3VudHJ5TmFtZSwgLUluY29tZUdyb3VwKQoKIyBjaGFuZ2UgbmFtZXMgb2YgeWVhciBhbmQgdmFsdWUgCm5hbWVzKGNvMl9pbmNvbWVfbG9uZylbM10gPC0gIlllYXIiCm5hbWVzKGNvMl9pbmNvbWVfbG9uZylbNF0gPC0gIkNPMihtZXRyaWMgdG9ucyBwZXIgY2FwaXRhKSIKYGBgCgoKIyMgRGF0YSBWaXN1YWxpemF0aW9uCgpJbmNsdWRlIFIgY29kZSBhbmQgd3JpdHRlbiBleHBsYW5hdGlvbiBmb3IgeW91ciBkYXRhIHZpc3VhbGl6YXRpb24ocykgd2l0aCBhdCBsZWFzdCAzIHZhcmlhYmxlcy4gWW91IG11c3QgaGF2ZSAqKmF0IGxlYXN0Kiogb25lIGdyYXBoLiBZb3UgbWF5IGhhdmUgbW9yZSB0aGFuIG9uZSAoSSB3b3VsZCBlbmNvdXJhZ2UgeW91IHRvIGhhdmUgbW9yZSB0aGFuIG9uZSkuIAoKCgoKIyMgQ29uY2x1c2lvbgoKQW5zd2VyIHlvdXIgcmVzZWFyY2ggcXVlc3Rpb24gdXNpbmcgdGhlIGRhdGEgc2V0cyBhbmQgdmlzdWFsaXphdGlvbnMgeW91IGNyZWF0ZWQuIA==</div>
 
 
 
