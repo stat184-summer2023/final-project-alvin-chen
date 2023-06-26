@@ -1,5 +1,5 @@
 ---
-title: "Final Project Basic Outline"
+title: "Final Project Report"
 author: "Alvin Chen"
 output: html_notebook
 ---
